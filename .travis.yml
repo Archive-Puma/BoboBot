@@ -7,7 +7,6 @@ install:
   - sudo pip install coveralls
 script:
   - sudo python bobobot.py -h
-  - sudo python bobobot.py -B BOTTOKEN -V
 after_success:
   - sudo coverage bobby.py -h
   - coveralls

@@ -42,9 +42,9 @@ chmod +x bobobot.py
  Please contact with [Kike Puma](https://linkedin.com/in/kikepuma) if you need more information.
 
 ## Screenshots
-![Help](https://github.com/CosasDePuma/Experiment626/blob/master/.screenshots/help.png?raw=true)
-![Conversation](https://github.com/CosasDePuma/Experiment626/blob/master/.screenshots/conversation.png?raw=true)
-![Verbose](https://github.com/CosasDePuma/Experiment626/blob/master/.screenshots/verbose.png?raw=true)
+![Help](https://github.com/CosasDePuma/BoboBot/blob/master/.screenshots/help.png?raw=true)
+![Conversation](https://github.com/CosasDePuma/BoboBot/blob/master/.screenshots/conversation.png?raw=true)
+![Verbose](https://github.com/CosasDePuma/BoboBot/blob/master/.screenshots/verbose.png?raw=true)
 
 ### Members
 

@@ -10,7 +10,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2007, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "1.1 Bobo is Compiling..."
+__version__ = "1.2 Bobo Investiga"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -114,7 +114,7 @@ except:
 ##      FUNCTIONS     ##
 ########################
 import time       #ProgramThreading
-import requests   #Request HTTP
+import requests   #HTTP POSTS
 
 def VirusTotal(url):
     
@@ -150,6 +150,19 @@ def VirusTotal(url):
 
     return myresponse
 
+def Crawler(url):
+    #Crawl the URL
+    data = { 'port': 80 }
+    response = requests.post(url, params=data)
+    print response.json()
+    if response == 'Response [200]':
+        myresponse = "¡La página web existe!"
+    elif response == 'Response [404]':
+        myresponse = "La página que me ha enviado no existe"
+    else:
+        myresponse = "No sé qué ha podido pasar, pero algo ha pasado..."
+    return myresponse
+
 def Bobo(msg):
     
     ############
@@ -167,20 +180,34 @@ def Bobo(msg):
     
     msg = msg['text'].lower()
 
+    # <-- COMMANDS -->#
+    if msg[0] == '/':
+        if '/analiza' in msg:
+            # VIRUS TOTAL #
+            try:
+                command,url = msg.split(' ')
+                if args.verbose:
+                    print(CWHITE + "[-] Analizando " + url + " en VirusTotal" + CDEFAULT)
+                response = VirusTotal(url)
+            except ValueError:
+                response = "Deberias probar a escribir '/analiza url.com'"
+        elif '/comprueba' in msg or '/comprobar' in msg:
+            # CRAWLER #
+            try:
+                command,url = msg.split(' ')
+                if args.verbose:
+                    print(CWHITE + "[-] Rastreando la URL " + url + CDEFAULT)
+                response = Crawler(url)
+            except ValueError:
+                response = "Deberias probar a escribir '/comprueba url.com'"
+        else:
+            return
+
     # <-- RESPONSES --> #
-    if 'hola' in msg:
-        # Saludo #
-        response = 'Hola, amo'
-    elif '/analiza' in msg:
-        # VIRUS TOTAL #
-        try:
-            command,url = msg.split(' ')
-            print(CWHITE + "[-] Analizando " + url + " en VirusTotal" + CDEFAULT)
-            response = VirusTotal(url)
-        except ValueError:
-            response = "Deberias probar a escribir '/analiza url.com'"
     else:
-        return
+        if 'hola' in msg:
+            # Saludo #
+            response = 'Hola, amo'
 
     #Response
     try:
