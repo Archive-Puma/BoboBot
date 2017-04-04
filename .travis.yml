@@ -1,0 +1,12 @@
+language: python
+sudo: required
+python:
+  - "2.7"
+install:
+  - sudo pip install -r requirements
+  - sudo pip install coveralls
+script:
+  - sudo python bobby.py -h
+after_success:
+  - sudo coverage bobby.py -h
+  - coveralls
