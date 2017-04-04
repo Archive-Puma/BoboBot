@@ -6,7 +6,8 @@ install:
   - sudo pip install -r requirements
   - sudo pip install coveralls
 script:
-  - sudo python bobby.py -h
+  - sudo python bobobot.py -h
+  - sudo python bobobot.py -B TELEGRAM.BOT.TOKEN -V
 after_success:
   - sudo coverage bobby.py -h
   - coveralls
