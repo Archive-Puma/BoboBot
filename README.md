@@ -1,4 +1,4 @@
-# BoboBot
+# BOBOBOT
 [![Travis Build](https://img.shields.io/travis/CosasDePuma/BoboBot.svg)](https://travis-ci.org/CosasDePuma/BoboBot) [![Python Version](https://img.shields.io/badge/python-2.7.13-yellow.svg?style=flat)](https://www.python.org/downloads/release/python-2713/) ![Made with Love](https://img.shields.io/badge/made%20with-<3-red.svg?style=flat) [![License](https://img.shields.io/github/license/CosasDePuma/BoboBot.svg)](https://github.com/CosasDePuma/BoboBot/blob/master/LICENSE)
 
 A Telegram Bot that only lives to serve you.
@@ -42,8 +42,8 @@ chmod +x bobobot.py
  Please contact with [Kike Puma](https://linkedin.com/in/kikepuma) if you need more information.
 
 ## Screenshots
-![Help](https://github.com/CosasDePuma/BoboBot/blob/master/.screenshots/help.png?raw=true)
 ![Conversation](https://github.com/CosasDePuma/BoboBot/blob/master/.screenshots/conversation.png?raw=true)
+![Help](https://github.com/CosasDePuma/BoboBot/blob/master/.screenshots/help.png?raw=true)
 ![Verbose](https://github.com/CosasDePuma/BoboBot/blob/master/.screenshots/verbose.png?raw=true)
 
 ### Members

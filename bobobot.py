@@ -2,6 +2,10 @@
 # -*- encoding: utf8 -*-
 #This makes possible to run this program as a script invoking the interpreter
 
+#Python Modules: os, sys, argparse, telepot, time
+#BoboBot Modules: crawler
+#Modules of Modules: requests
+
 #########################
 ##     HEADER INFO     ##
 #########################
@@ -68,8 +72,6 @@ INSERT_HERE_YOUR_USER_ID = '' #INSERT HERE YOUR USER ID
 INSERT_HERE_YOUR_BOT_TOKEN = '' #INSERT HERE YOUR BOT TOKEN
 INSERT_HERE_YOUR_VIRUSTOTAL_KEY = '' #INSERT HERE YOUR VIRUSTOTAL KEY
 
-waitforit = ''
-
 if args.bot_token:
     TOKEN = args.bot_token
 else:
@@ -114,7 +116,14 @@ except:
 ##      FUNCTIONS     ##
 ########################
 import time       #ProgramThreading
-import requests   #HTTP POSTS
+
+try:
+    sys.path.append('scripts\\' if os.name == 'nt' else 'scripts/')
+    sys.path
+    #Import SCRPTS
+    import bcrawler
+except:
+    print("[ERROR]")
 
 def VirusTotal(url):
     
@@ -150,19 +159,6 @@ def VirusTotal(url):
 
     return myresponse
 
-def Crawler(url):
-    #Crawl the URL
-    data = { 'port': 80 }
-    response = requests.post(url, params=data)
-    print response.json()
-    if response == 'Response [200]':
-        myresponse = "¡La página web existe!"
-    elif response == 'Response [404]':
-        myresponse = "La página que me ha enviado no existe"
-    else:
-        myresponse = "No sé qué ha podido pasar, pero algo ha pasado..."
-    return myresponse
-
 def Bobo(msg):
     
     ############
@@ -174,11 +170,16 @@ def Bobo(msg):
         if args.verbose:
             print(CWHITE + "[+] User " + str(env_id) + " told me: " + CBLUE + "'" + msg['text'] + "'" + CDEFAULT)
     
+    else:
+        return
+
+
     ############
     # BOBOHAND #
     ############
     
     msg = msg['text'].lower()
+    response = str()
 
     # <-- COMMANDS -->#
     if msg[0] == '/':
@@ -194,12 +195,10 @@ def Bobo(msg):
         elif '/comprueba' in msg or '/comprobar' in msg:
             # CRAWLER #
             try:
-                command,url = msg.split(' ')
-                if args.verbose:
-                    print(CWHITE + "[-] Rastreando la URL " + url + CDEFAULT)
-                response = Crawler(url)
-            except ValueError:
-                response = "Deberias probar a escribir '/comprueba url.com'"
+                command,url = msg.split(' ', 1)
+                response = bcrawler.BoboResponse(bcrawler.Crawl(url))
+            except:
+                pass #HAND EXCEPTIONS
         else:
             return
 
@@ -229,10 +228,6 @@ if len(sys.argv) == 1 and TOKEN == '':
 try:
     #Read the new messages
     bot.message_loop(Bobo, run_forever=CGREEN + "\n[+] Bobo is listening..." + CDEFAULT)
-
-    #Keep the program running
-    #while True:
-    #    time.sleep(10)
 
 #Catch Ctrl+C
 except KeyboardInterrupt:

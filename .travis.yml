@@ -1,12 +1,22 @@
-language: python
 sudo: required
+language: python
+
 python:
   - "2.7"
+
 install:
   - sudo pip install -r requirements
   - sudo pip install coveralls
+
 script:
+  - sudo coverage run scripts/bcrawler
+  - sudo coverage run scripts/bcrawler hola
+  - sudo coverage run scripts/bcrawler data.uvigo.es
+  - sudo coverage run scripts/bcrawler daat.uvigo.es
+  - sudo coverage run scripts/bcrawler http://daat.uvigo.es/
+  - sudo coverage run scripts/bcrawler 192.168.1.1
+
   - sudo python bobobot.py -h
+
 after_success:
-  - sudo coverage bobby.py -h
   - coveralls
