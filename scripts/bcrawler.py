@@ -36,7 +36,7 @@ try:
     import requests
 except ImportError:
     print(CERROR + "[ERROR] Please, install REQUESTS module\n[ERROR] Try to use 'pip install requests' or 'pip install --upgrade requests'" + CDEFAULT)
-    exit(0xDEAD)
+    exit(0)
 
 #########################
 ##      FUNCTIONS      ##
@@ -85,6 +85,6 @@ if __name__ == '__main__':
         url = sys.argv[1]
     except IndexError:
         print("[ERROR] Usage: python Bobo-Crawl.py [url]")
-        exit(0xDEAD)
+        exit(0)
     response = Crawl(url)
     print (url, response, BoboResponse(response))

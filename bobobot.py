@@ -3,7 +3,7 @@
 #This makes possible to run this program as a script invoking the interpreter
 
 #Python Modules: os, sys, argparse, telepot, time
-#BoboBot Modules: crawler
+#BoboBot Modules: crawler, analyzer
 #Modules of Modules: requests
 
 #########################
