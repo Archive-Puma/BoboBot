@@ -9,14 +9,16 @@ install:
   - sudo pip install coveralls
 
 script:
-  - sudo coverage run scripts/bcrawler
-  - sudo coverage run scripts/bcrawler hola
-  - sudo coverage run scripts/bcrawler data.uvigo.es
-  - sudo coverage run scripts/bcrawler daat.uvigo.es
-  - sudo coverage run scripts/bcrawler http://daat.uvigo.es/
-  - sudo coverage run scripts/bcrawler 192.168.1.1
+  - sudo coverage run scripts/bcrawler.py
+  - sudo coverage run scripts/bcrawler.py hola
+  - sudo coverage run scripts/bcrawler.py data.uvigo.es
+  - sudo coverage run scripts/bcrawler.py daat.uvigo.es
+  - sudo coverage run scripts/bcrawler.py http://daat.uvigo.es/
+  - sudo coverage run scripts/bcrawler.py 192.168.1.1
 
-  - sudo python bobobot.py -h
+  - sudo coverage run scripts/banalyzer.py
+
+  - sudo coverage run bobobot.py -h
 
 after_success:
   - coveralls

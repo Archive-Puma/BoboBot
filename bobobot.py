@@ -14,7 +14,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2007, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "1.2 Bobo Investiga"
+__version__ = "1.3 Bobo Analiza"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -118,46 +118,13 @@ except:
 import time       #ProgramThreading
 
 try:
+    #Añadimos la ruta de los modulos de Bob
     sys.path.append('scripts\\' if os.name == 'nt' else 'scripts/')
-    sys.path
     #Import SCRPTS
     import bcrawler
+    import banalyzer
 except:
-    print("[ERROR]")
-
-def VirusTotal(url):
-    
-    #Analize the URL
-    headers = {
-            "Accept-Encoding": "gzip, deflate",
-            "User-Agent" : "gzip,  Bobo Bot is analizing this URL"
-    }
-    params = {'apikey': VT_KEY, 'resource':url}
-    try:
-        response = requests.post('https://www.virustotal.com/vtapi/v2/url/report', 
-                params=params, headers=headers).json()
-    except:
-        myresponse = "Me dicen que tu API Key de VirusTotal es inválida, mi amo. Seguro que es fallo de la página, tu no cometes errores"
-        print(CRED + "[ERROR] VirusTotal API Key is invalid" + CDEFAULT)
-        return myresponse
-
-    #Analize the response
-    if response['verbose_msg'] == 'Scan finished, scan information embedded in this object':
-        if response['positives'] == 0:
-            myresponse = "La URL no ha sido detectada como maliciosa por ningún antivirus, amo"
-        else:
-            myresponse = "La URL que me has enviado ha sido detectada como maliciosa por " + str(response['positives']) + " de " + str(response['total']) + " antivirus. Ten cuidado, amo"
-    elif response['verbose_msg'] == 'Resource does not exist in the dataset':
-        try:
-            params = {'apikey': VT_KEY, 'url':url}
-            response = requests.post('https://www.virustotal.com/vtapi/v2/url/scan', data=params).json()
-        except:
-            myresponse = "Creo que he hecho algo mal, mi amo. Vuelva a intentarlo por favor"
-            print(CRED + "[ERROR] Algo ha fallado al analizar la URL" + CDEFAULT)
-            return myresponse
-        myresponse = "La URL nunca ha sido analizada anteriormente por ninguno de esos no-humanos llamados 'Antivirus'. Tardaré un rato en analizarla. Por favor, espere y vuelva a preguntármelo en un rato"
-
-    return myresponse
+    print(CERROR + "[ERROR] Bobo Scripts can not be loaded" + C)
 
 def Bobo(msg):
     
@@ -179,24 +146,25 @@ def Bobo(msg):
     ############
     
     msg = msg['text'].lower()
-    response = str()
+    response = 'Algo ha ido mal, mi amo'
 
     # <-- COMMANDS -->#
     if msg[0] == '/':
-        if '/analiza' in msg:
+	command , data = msg.split(' ', 1)
+        if '/analiza' in command or '/analyze' in command:
             # VIRUS TOTAL #
             try:
-                command,url = msg.split(' ')
                 if args.verbose:
-                    print(CWHITE + "[-] Analizando " + url + " en VirusTotal" + CDEFAULT)
-                response = VirusTotal(url)
+                    print(CWHITE + "[-] Analizando " + data + " en VirusTotal" + CDEFAULT)
+                response = banalyzer.Analyze(VT_KEY, data)
             except ValueError:
-                response = "Deberias probar a escribir '/analiza url.com'"
-        elif '/comprueba' in msg or '/comprobar' in msg:
+                response = "Deberias probar a escribir '/analyze url.com'"
+        elif '/comprueba' in command or '/comprobar' or '/crawl' in command:
             # CRAWLER #
             try:
-                command,url = msg.split(' ', 1)
-                response = bcrawler.BoboResponse(bcrawler.Crawl(url))
+                response = bcrawler.BoboResponse(bcrawler.Crawl(data))
+            except ValueError:
+                response = "Deberias probar a escribir '/crawl url.com'"
             except:
                 pass #HAND EXCEPTIONS
         else:

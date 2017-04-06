@@ -10,11 +10,23 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2007, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "1.0 BoboCrawler"
+__version__ = "1.1 BoboCrawler"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
 
+########################
+##       COLORS       ##
+########################
+
+#Color change: "\033[cod_formato;cod_texto;cod_fondom"
+CERROR = "\n\033[1;31m" #BOLD RED
+CGREEN = "\033[1;32m" #GREEN
+CWHITE = "\033[1;37m" #WHITE
+CRED = "\033[0;31m" #RED
+CBLUE = "\033[1;34m" #BLUE
+CDEFAULT = "\033[0m" #DEFAULT COLOR
+CREDITS = "\033[2;37m" #LIGHT WHITE
 
 #########################
 ##     REQUIREMENTS    ##
@@ -23,7 +35,7 @@ __status__ = "In development"
 try:
     import requests
 except ImportError:
-    print("[ERROR] Please, install REQUESTS module\n[ERROR] Try to use 'pip install requests' or 'pip install --upgrade requests'")
+    print(CERROR + "[ERROR] Please, install REQUESTS module\n[ERROR] Try to use 'pip install requests' or 'pip install --upgrade requests'" + CDEFAULT)
     exit(0xDEAD)
 
 #########################
@@ -31,24 +43,6 @@ except ImportError:
 #########################
 
 def Crawl(url):
-
-#    # Check if url is a domain name or an IP
-#    ########################################
-#    curl = url
-#    dots = 0
-#    nums = 0
-#    while True:
-#        if '.' in curl:
-#            dots += 1
-#            segment, suburl = curl.split('.', 1)
-#            if segment.isdigit():
-#                nums += 1
-#            print(dots,nums)
-#        else:
-#                break
-#    if nums == dots:
-#        return 901
-#    #########################################
 
     #Init variable
     crawler = requests.models.Response()
