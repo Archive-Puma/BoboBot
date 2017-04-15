@@ -1,0 +1,41 @@
+##################################
+##################################
+####                          ####
+####    BOBO LANGUAGE FILE    ####
+####      enEN - English      ####
+####                          ####
+##################################
+##################################
+
+##################################
+#    Translated by Kike Puma     #
+##################################
+
+# << DIALOGS >>
+Qhi::Hi
+Rhi::Hi!
+
+dialog_1::User
+dialog_2::told me:
+dialog_r::I have answered:
+
+# << ERROR MESSAGES >>
+error_creds::Insert the tokens...
+error_encoder::File has unsupported characters
+error_keyboard::Keyboard interruption. You killed Bobo!
+error_lang::The language file contains errors
+error_scripts::Can not load Bobo Scripts
+error_tokens::Invalid Tokens. Now we have to kill Bobo ...
+error_unknown::Something has gone wrong, my master.
+error_userID::Bobo is not able to talk. Please review your User ID
+
+# << RECOMMENDATIONS >>
+should_analyze::You should try to write '/analyze url.com'
+should_crawl::You should try to write '/crawl url.com'
+
+# << OTHER MESSAGES >>
+name::Lord
+init::Bobo is listening...
+confused::I don't know what should I response,
+analyzing_1::Analyzing 
+analyzing_2:: in VirusTotal

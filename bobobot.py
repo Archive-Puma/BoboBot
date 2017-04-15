@@ -14,7 +14,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2007, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "1.3 Bobo Analiza"
+__version__ = "1.4 Bobo Poliglota"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -55,13 +55,65 @@ import argparse
 parser = argparse.ArgumentParser(version=__version__)
 #Groups
 config = parser.add_argument_group('Configuration')
+otheropt = parser.add_argument_group('More options')
 #Arguments
 parser.add_argument("-V", "--verbose", help="verbose mode", action="store_true")
 config.add_argument("-c", "--config", help="Config file with all the tokens")
 config.add_argument("-B", "--bot-token", help="Telegram Token: HTTP API. Allows Bobo to receive messages. Given by @BotFather")
 config.add_argument("-id", "--user-id", help="Telegram Token: Chat ID. Allows Bobo to send messages. Given by @UserInfoBot")
 config.add_argument("-virus","--virustotal-key", help="VirusTotal Token: API Key. Allows Bobo analyze URLs")
+otheropt.add_argument("-l","--lang", choices=('esES',), default='esES', help="Change Bobo language. Options: { esES }")
+otheropt.add_argument("-L","--load-lang", help="Load a translate file")
 args = parser.parse_args()
+
+########################
+##      LANGUAGE      ##
+########################
+
+esES = {
+        'error_creds':'Inserta los Tokens...',
+        'error_encoder':'El archivo tiene caracteres no admitidos',
+        'error_lang':'El archivo de idioma contiene errores',
+        'error_unknown':'Algo ha ido mal, mi amo',
+        'error_scripts':'No es posible cargar los Scripts de Bobo',
+        'error_keyboard':'Interrupción de teclado. ¡Has matado a Bobo!',
+        'error_tokens':'Tokens inválidos. Ahora habrá que matar a Bobo...',
+        'error_userID':'Bobo no es capaz de hablar. Por favor, revisa tu ID de Usuario',
+        'Qhi':'Hola',
+        'Rhi':'¡Hola!',
+        'name':'amo',
+        'init':'Bobo esta escuchando...',
+        'confused': 'No sé muy bien qué responder,',
+        'should_analyze': 'Deberias probar a escribir \'/analyze url.com\'',
+        'should_crawl':'Deberias probar a escribir \'/crawl url.com\'',
+        'analyzing_1':'Analizando ', 'analyzing_2':' en VirusTotal',
+        'dialog_1':'El usuario', 'dialog_2':'me ha dicho:',
+        'dialog_r':'Yo le he contestado: ',
+        }
+
+if args.load_lang:
+        loadLang = dict()
+        try:           
+                langf = open(args.load_lang,'r')
+                for line in langf:
+                        line = line.encode('utf-8').strip()
+                        if len(line) == 0 or line[0] == '#':
+                                continue
+                        tag , phrase = line.split('::')
+                        loadLang[tag] = phrase
+                langf.close()
+                lang = loadLang
+        except UnicodeDecodeError:
+                lang = esES
+                print(CERROR + '[ERROR ' + lang['error_encoder'] + CDEFAULT)
+        except IOError:
+                lang = esES
+                print(CERROR + '[ERROR] ' + lang['error_lang'] + CDEFAULT)
+elif args.lang:
+    if args.lang == 'esES':
+        lang = esES
+else:
+    lang = esES
 
 #######################
 ##   CONFIGURATION   ##
@@ -101,15 +153,15 @@ if args.config:
                 pass
         txt.close()
     except IOError:
-        print(CERROR + "[ERROR] No such file or directory: '" + args.config + "'" + CDEFAULT)
+        print(CERROR + '[ERROR] ' + ' \'' + args.config + '\'' + CDEFAULT)
         sys.exit(0xDEAD)
-         
+
         print(name,key.strip())
 try:
     #Start BoboBot
     bot = telepot.Bot(TOKEN)
 except:
-    print(CERROR + "[ERROR] Invalid tokens. Killing Bobo..." + CDEFAULT)
+    print(CERROR + '[ERROR] ' + lang['error_tokens'] + CDEFAULT)
     sys.exit(0xDEAD)
 
 ########################
@@ -124,10 +176,10 @@ try:
     import bcrawler
     import banalyzer
 except:
-    print(CERROR + "[ERROR] Bobo Scripts can not be loaded" + C)
+    print(CERROR + '[ERROR] ' + lang['error_scripts'] + CDEFAULT)
 
 def Bobo(msg):
-    
+
     ############
     # BOBOEYES #
     ############
@@ -135,8 +187,8 @@ def Bobo(msg):
     env_content, env_chat, env_id = telepot.glance(msg)
     if env_content == 'text':
         if args.verbose:
-            print(CWHITE + "[+] User " + str(env_id) + " told me: " + CBLUE + "'" + msg['text'] + "'" + CDEFAULT)
-    
+            print(CWHITE + '[+] ' + lang['dialog_1'] + ' ' + str(env_id) + ' ' + lang['dialog_2'] + ' ' + CBLUE + "'" + msg['text'] + "'" + CDEFAULT)
+
     else:
         return
 
@@ -144,45 +196,46 @@ def Bobo(msg):
     ############
     # BOBOHAND #
     ############
-    
+
     msg = msg['text'].lower()
-    response = 'Algo ha ido mal, mi amo'
+    response = lang['confused'] + ' ' + lang['name']
 
     # <-- COMMANDS -->#
     if msg[0] == '/':
-	command , data = msg.split(' ', 1)
+        command , data = msg.split(' ', 1)
         if '/analiza' in command or '/analyze' in command:
             # VIRUS TOTAL #
             try:
                 if args.verbose:
-                    print(CWHITE + "[-] Analizando " + data + " en VirusTotal" + CDEFAULT)
+                    print(CWHITE + '[-] ' + lang['analyzing_1'] + ' ' + data + ' ' + lang['analyzing_2'] + CDEFAULT)
                 response = banalyzer.Analyze(VT_KEY, data)
             except ValueError:
-                response = "Deberias probar a escribir '/analyze url.com'"
+                response = lang['should_analyze']
         elif '/comprueba' in command or '/comprobar' or '/crawl' in command:
             # CRAWLER #
             try:
                 response = bcrawler.BoboResponse(bcrawler.Crawl(data))
             except ValueError:
-                response = "Deberias probar a escribir '/crawl url.com'"
+                response = lang['should_crawl']
             except:
                 pass #HAND EXCEPTIONS
         else:
+            response = lang['error_unknown']
             return
 
     # <-- RESPONSES --> #
     else:
-        if 'hola' in msg:
+        if lang['Qhi'].lower() in msg:
             # Saludo #
-            response = 'Hola, amo'
+            response = lang['Rhi']
 
     #Response
     try:
         bot.sendMessage(ID, response)
         if args.verbose:
-            print(CWHITE + "[-] I have answered:" + CBLUE + "'" + response + "'" + CDEFAULT)
+            print(CWHITE + '[-] ' + lang['dialog_r'] + CBLUE + '\'' + response + '\'' + CDEFAULT)
     except IOError:
-        print(CERROR + "[ERROR] Bobo cannot talk, please check out your USER ID Token" + CDEFAULT)
+        print(CERROR + '[ERROR] ' + lang['error_userID'] + CDEFAULT)
         #system.exit(0xDEAD) <-- FIX THIS EXCEPTION, PLS -->
 
 ########################
@@ -190,14 +243,14 @@ def Bobo(msg):
 ########################
 
 if len(sys.argv) == 1 and TOKEN == '':
-    print(CERROR + "[ERROR] Insert the Tokens..." + CDEFAULT)
+    print(CERROR + '[ERROR] ' + lang['error_creds'] + CDEFAULT)
     sys.exit(0xDEAD)
 
 try:
     #Read the new messages
-    bot.message_loop(Bobo, run_forever=CGREEN + "\n[+] Bobo is listening..." + CDEFAULT)
+    bot.message_loop(Bobo, run_forever=CGREEN + '\n[+] ' + lang['init'] + CDEFAULT)
 
 #Catch Ctrl+C
 except KeyboardInterrupt:
-    print(CERROR + "[ERROR] Keyboard Interrupt. You killed Bobo! ..." + CDEFAULT)
+    print(CERROR + '[ERROR] ' + lang['error_keyboard'] + CDEFAULT)
     sys.exit(0)
