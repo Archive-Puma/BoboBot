@@ -11,7 +11,7 @@
 #########################
 
 __author__ = "Kike Puma"
-__copyright__ = "Copyright 2007, CosasDePuma"
+__copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
 __version__ = "1.4 Bobo Poliglota"
