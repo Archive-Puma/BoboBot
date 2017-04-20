@@ -13,7 +13,7 @@
 
 # << DIALOGS >>
 Qhi::Hola
-Rhi::Hola!
+Rhi::Buenas!
 
 dialog_1::El usuario 
 dialog_2::me ha dicho: 

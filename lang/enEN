@@ -13,7 +13,7 @@
 
 # << DIALOGS >>
 Qhi::Hi
-Rhi::Hi!
+Rhi::Hello!
 
 dialog_1::User
 dialog_2::told me:
