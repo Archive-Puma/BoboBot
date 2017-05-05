@@ -10,7 +10,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "2.0 RoboBobo"
+__version__ = "2.1 BoboListen"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -33,6 +33,7 @@ except ImportError:
 
 try:
     import telepot    #Telegram API
+    from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton #Keyboard and Buttons in Telegram
 except ImportError:
     sys.exit(color.ERROR + "[ERROR] Telepot module is not installed" + \
     color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt'" + color.END)
@@ -43,12 +44,14 @@ except ImportError:
 
 class color:
     #Color change: "\033[cod_formato;cod_texto;cod_fondom"
-    RED = "\033[0;31m" #RED
+    BLUE = "\033[1;34m" #BLUE
     END = "\033[0m" #DEFAULT COLOR
     ERROR = "\033[1;31m" #BOLD RED
     GREEN = "\033[1;32m" #GREEN
-    BLUE = "\033[1;34m" #BLUE
+    PURPLE = "\033[1;35m" #PURPLE
+    RED = "\033[0;31m" #RED
     WHITE = "\033[1;37m" #WHITE
+    YELLOW = "\033[1;33m" #YELLOW
     CREDITS = "\033[2;37m" #LIGHT WHITE
 
 #=============================================#
@@ -85,6 +88,8 @@ args = parser.parse_args()
 # -------------- Configuration -------------- #
 #=============================================#
 
+bot = telepot.Bot('xxx')
+
 # T O K E N S
 token = {}
 
@@ -114,12 +119,40 @@ if not ('botmaster' in token and 'chatID' in token):
 # ---------------- Functions ---------------- #
 #=============================================#
 
-def log(text):
+def log(text):       #Verbose print
     if args.verbose:
         print(text)
 
+def bye(text):       #Error verbosed
+    log(text)
+    sys.exit(0xDEAD)
+
+# B O T   F U N C T I O N S
+def botResponse(text):
+    bot.sendMessage(token['chatID'], msg)
+    log(color.YELLOW + "[BBB] Bobo the Bot response " + color.WHITE + text)
+
+def handle(msg):    #Manage Telegram Messages
+    content_type, chat_type, chat_id = telepot.glance(msg)
+    #Text Messages
+    if content_type == 'text':
+        log(color.YELLOW + "[MSG] " + msg['from']['first_name'] + \
+            " (@" + msg['from']['username'] + ") said " + \
+            color.WHITE + msg['text'] + color.END)
+
+# M A I N   F U N C T I O N
 def main():
-    log("Verbose mode is ON")
+    log(color.BLUE + "[INFO] Verbose mode is ON" + color.END) #Verbose mode
+    #Create the bot
+    bot = telepot.Bot(token['botmaster'])
+    log(color.GREEN + "[INFO] Bobo! Wake up!" + color.END)
+    try:
+        #Start the bot
+        bot.message_loop(handle,run_forever=color.GREEN + "[INFO] Bobo is awake!" + \
+            color.BLUE + "\n[INFO] You will find it at " + color.WHITE + \
+            "https://web.telegram.org/#/im?p=@" + bot.getMe()['username'] + color.END)
+    except telepot.exception.UnauthorizedError:
+        bye(color.RED + "[ERROR] BotMaster token is wrong. Bobo is still asleep...")
 
 #=============================================#
 # ------------------ Main ------------------- #
@@ -129,7 +162,7 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        sys.exit(color.BLUE + "[INFO] KeyboardInterrupt detected. You killed Bobo :(" + color.END)
+        bye(color.BLUE + "\n[INFO] KeyboardInterrupt detected. You killed Bobo :(" + color.END)
 
 #=============================================#
 # ------------------ ToDo's ----------------- #
