@@ -4,13 +4,11 @@
 A Telegram Bot that only lives to serve you.
 
   - Real-time conversation
-  - Multi-plataform support
   - Fun and funny
 
 ## New Features!
 
-  - VirusTotal Analyzer
-  - One-link Crawler
+  - Not yet...
 
 ## Why the name is BoboBo... I mean... BoboBot?
 
@@ -23,20 +21,20 @@ git clone https://github.com/cosasdepuma/bobobot.git
 ```
 Install the requisites
 ```
-sudo pip install -r requirements
+sudo pip install -r requirements.txt
 ```
 Testing the program
 ```
-sudo python bobobot.py
+sudo python bobo.py
 ```
 If you have another default version of Python
 ```
-sudo python2 bobobot.py
+sudo python2 bobo.py
 ```
 You can also run the program as a script invoking the interpreter
 ```
-chmod +x bobobot.py
-./bobobot.py
+chmod +x bobo.py
+./bobo.py
 ```
 
  Please contact with [Kike Puma](https://linkedin.com/in/kikepuma) if you need more information.
