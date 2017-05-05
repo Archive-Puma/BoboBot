@@ -20,16 +20,22 @@ __status__ = "In development"
 #=============================================#
 
 try:
-    import argparse, os, platform, sys
+    import os, platform, sys
 except ImportError:
     sys.exit(color.ERROR + "[ERROR] Basic Python Modules are corrupted or not installed" + color.END)
 
 # R E Q U I R E M E N T S
 try:
+    import argparse    #ArgumentParse
+except ImportError:
+    sys.exit(color.ERROR + "[ERROR] ArgParse module is not installed" + \
+    color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt'" + color.END)
+
+try:
     import telepot    #Telegram API
 except ImportError:
     sys.exit(color.ERROR + "[ERROR] Telepot module is not installed" + \
-    color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements'" + color.END)
+    color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt'" + color.END)
 
 #=============================================#
 # ----------------- Colors ------------------ #
@@ -124,3 +130,10 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         sys.exit(color.BLUE + "[INFO] KeyboardInterrupt detected. You killed Bobo :(" + color.END)
+
+#=============================================#
+# ------------------ ToDo's ----------------- #
+#=============================================#
+
+# ------------- Dialog Function ------------- #
+# ------------- Update README.md ------------ #
