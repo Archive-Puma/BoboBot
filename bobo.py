@@ -10,7 +10,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "2.1 BoboListen"
+__version__ = "2.2 BoboJoker"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -37,6 +37,10 @@ try:
 except ImportError:
     sys.exit(color.ERROR + "[ERROR] Telepot module is not installed" + \
     color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt'" + color.END)
+
+# B O B O   M O D U L E S
+
+from core.modules.bjoker import joke
 
 #=============================================#
 # ----------------- Colors ------------------ #
@@ -128,22 +132,35 @@ def bye(text):       #Error verbosed
     sys.exit(0xDEAD)
 
 # B O T   F U N C T I O N S
-def botResponse(text):
-    bot.sendMessage(token['chatID'], msg)
+def response(text):     #Bobo talks!
+    bot.sendMessage(token['chatID'],text)
     log(color.YELLOW + "[BBB] Bobo the Bot response " + color.WHITE + text)
 
-def handle(msg):    #Manage Telegram Messages
+def understand(text):   #Parse conversations
+    text = text.lower()
+    #Commands
+    if text[0] == '/':
+        if '/joke' == text.split(" ",1)[0]:
+            response(joke())
+    #Conversation
+    else:
+        if 'joke' in text:
+            response(joke())
+
+def handle(msg):        #Manage Telegram Messages
     content_type, chat_type, chat_id = telepot.glance(msg)
     #Text Messages
     if content_type == 'text':
         log(color.YELLOW + "[MSG] " + msg['from']['first_name'] + \
             " (@" + msg['from']['username'] + ") said " + \
             color.WHITE + msg['text'] + color.END)
+        understand(msg['text'])
 
 # M A I N   F U N C T I O N
 def main():
     log(color.BLUE + "[INFO] Verbose mode is ON" + color.END) #Verbose mode
     #Create the bot
+    global bot
     bot = telepot.Bot(token['botmaster'])
     log(color.GREEN + "[INFO] Bobo! Wake up!" + color.END)
     try:
@@ -168,5 +185,4 @@ if __name__ == '__main__':
 # ------------------ ToDo's ----------------- #
 #=============================================#
 
-# ------------- Dialog Function ------------- #
-# ------------- Update README.md ------------ #
+# --------------- Port Scanner -------------- #
