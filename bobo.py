@@ -10,7 +10,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "2.2 BoboJoker"
+__version__ = "2.3 BoboUpdater"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -33,7 +33,6 @@ except ImportError:
 
 try:
     import telepot    #Telegram API
-    from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton #Keyboard and Buttons in Telegram
 except ImportError:
     sys.exit(color.ERROR + "[ERROR] Telepot module is not installed" + \
     color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt'" + color.END)
@@ -41,6 +40,7 @@ except ImportError:
 # B O B O   M O D U L E S
 
 from core.modules.bjoker import joke
+from core.modules.bupdater import is_last_version
 
 #=============================================#
 # ----------------- Colors ------------------ #
@@ -158,7 +158,11 @@ def handle(msg):        #Manage Telegram Messages
 
 # M A I N   F U N C T I O N
 def main():
-    log(color.BLUE + "[INFO] Verbose mode is ON" + color.END) #Verbose mode
+    #Check available updates
+    if not is_last_version(__version__):
+        print(color.ERROR + "[UPDATE] " + color.YELLOW + "There is a new version available" + color.END)
+    #Verbose mode
+    log(color.BLUE + "[INFO] Verbose mode is ON" + color.END)
     #Create the bot
     global bot
     bot = telepot.Bot(token['botmaster'])
@@ -169,7 +173,7 @@ def main():
             color.BLUE + "\n[INFO] You will find it at " + color.WHITE + \
             "https://web.telegram.org/#/im?p=@" + bot.getMe()['username'] + color.END)
     except telepot.exception.UnauthorizedError:
-        bye(color.RED + "[ERROR] BotMaster token is wrong. Bobo is still asleep...")
+        bye(color.ERROR + "[ERROR] BotMaster token is wrong. Bobo is still asleep...")
 
 #=============================================#
 # ------------------ Main ------------------- #
