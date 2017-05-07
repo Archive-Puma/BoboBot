@@ -10,37 +10,10 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "2.3 BoboUpdater"
+__version__ = "2.4 WhoIsBobo?"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
-
-#=============================================#
-# ----------------- Modules ----------------- #
-#=============================================#
-
-try:
-    import os, platform, sys
-except ImportError:
-    sys.exit(color.ERROR + "[ERROR] Basic Python Modules are corrupted or not installed" + color.END)
-
-# R E Q U I R E M E N T S
-try:
-    import argparse    #ArgumentParse
-except ImportError:
-    sys.exit(color.ERROR + "[ERROR] ArgParse module is not installed" + \
-    color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt'" + color.END)
-
-try:
-    import telepot    #Telegram API
-except ImportError:
-    sys.exit(color.ERROR + "[ERROR] Telepot module is not installed" + \
-    color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt'" + color.END)
-
-# B O B O   M O D U L E S
-
-from core.modules.bjoker import joke
-from core.modules.bupdater import is_last_version
 
 #=============================================#
 # ----------------- Colors ------------------ #
@@ -57,6 +30,33 @@ class color:
     WHITE = "\033[1;37m" #WHITE
     YELLOW = "\033[1;33m" #YELLOW
     CREDITS = "\033[2;37m" #LIGHT WHITE
+
+#=============================================#
+# ----------------- Modules ----------------- #
+#=============================================#
+
+try:
+    import argparse, os, platform, sys
+except ImportError:
+    sys.exit(color.ERROR + "[ERROR] Basic Python Modules are corrupted or not installed" + color.END)
+
+# R E Q U I R E M E N T S
+
+try:
+    import telepot    #Better Telegram API
+except ImportError:
+    sys.exit(color.ERROR + "[ERROR] Telepot module is not installed" + \
+    color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt'" + color.END)
+
+# B O B O   M O D U L E S
+
+try:
+    from core.modules.bjoker import joke
+    from core.modules.bupdater import is_last_version
+    from core.modules.bwhois import whois, whoare
+except ImportError:
+    sys.exit(color.ERROR + "[ERROR] Module missing" + \
+    color.BLUE + "\n[INFO] Please, install it using 'sudo pip install -r requirements.txt' or check 'core/modules/' folder" + color.END)
 
 #=============================================#
 # -------------- Check System --------------- #
@@ -140,8 +140,18 @@ def understand(text):   #Parse conversations
     text = text.lower()
     #Commands
     if text[0] == '/':
-        if '/joke' == text.split(" ",1)[0]:
+        data = text.split(" ")
+        # JOKER - BOBO's MODULE #
+        if '/joke' == data[0]:
             response(joke())
+        # WHOIS - BOBO's MODULE #
+        elif '/whois' == data[0]:
+            for site in data[2:]:
+                response(whois(data[1],site))
+        elif '/whoare' == data[0]:
+            for site in data[1:]:
+                response(whoare(site))
+
     #Conversation
     else:
         if 'joke' in text:
@@ -173,7 +183,7 @@ def main():
             color.BLUE + "\n[INFO] You will find it at " + color.WHITE + \
             "https://web.telegram.org/#/im?p=@" + bot.getMe()['username'] + color.END)
     except telepot.exception.UnauthorizedError:
-        bye(color.ERROR + "[ERROR] BotMaster token is wrong. Bobo is still asleep...")
+        bye(color.ERROR + "[ERROR] BotMaster token is wrong. Bobo is still asleep..." + color.END)
 
 #=============================================#
 # ------------------ Main ------------------- #
