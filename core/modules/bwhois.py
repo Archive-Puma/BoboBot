@@ -13,7 +13,7 @@ def getwhois(site):
         who_is = get_whois(site)
         return who_is
     except WhoisException:
-        return "No WHOIS root server found for \'%s\' domain" % site
+        return "No WHOIS root server found for \'{0}\' domain".format(site)
 
 def whois(person, site):
     person = str(person).lower()
@@ -45,9 +45,9 @@ def whois(person, site):
             information += "\n[Street] " + str(who_is['contacts'][person]['street']) + \
                 " - Postal Code: " + str(who_is['contacts'][person]['postalcode'])
         except KeyError:
-            information += "\n[ No %s information available ]" % person
+            information += "\n[ No {0} information available ]".format(person)
         except TypeError:
-            information += "\n[ No %s information available ]" % person
+            information += "\n[ No {0} information available ]".format(person)
 
         return information
     else:
@@ -61,6 +61,6 @@ def whoare(site):
     information += "\n\n" + whois('billing',site)
 
     if "No WHOIS root server found" in information:
-        return "No WHOIS root server found for \'%s\' domain" % site
+        return "No WHOIS root server found for \'{0}\' domain".format(site)
     else:
         return information
