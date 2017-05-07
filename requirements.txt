@@ -1,3 +1,4 @@
+dnspython>=1.15.0
 pythonwhois>=2.4.3
 requests>=2.13.0
 telepot>=10.5
