@@ -10,7 +10,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "2.4 WhoIsBobo?"
+__version__ = "2.5 BoboLooker"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -52,6 +52,7 @@ except ImportError:
 
 try:
     from core.modules.bjoker import joke
+    from core.modules.bnslookup import nslookup
     from core.modules.bupdater import is_last_version
     from core.modules.bwhois import whois, whoare
 except ImportError:
@@ -151,7 +152,19 @@ def understand(text):   #Parse conversations
         elif '/whoare' == data[0]:
             for site in data[1:]:
                 response(whoare(site))
-
+        # NSLOOKUP - BOBO's MODULE #
+        elif '/a' == data[0] or '/ipv4' == data[0]:
+            for site in data[1:]:
+                response(nslookup('A',site))
+        elif '/aaaa' == data[0] or '/ipv6' == data[0]:
+            for site in data[1:]:
+                response(nslookup('AAAA',site))
+        elif '/mx' == data[0] or '/mailservers' == data[0]:
+            for site in data[1:]:
+                response(nslookup('MX',site))
+        elif '/ns' == data[0] or '/nameservers' == data[0]:
+            for site in data[1:]:
+                response(nslookup('NS',site))
     #Conversation
     else:
         if 'joke' in text:
@@ -200,3 +213,4 @@ if __name__ == '__main__':
 #=============================================#
 
 # --------------- Port Scanner -------------- #
+# -- Add help in /command and /command help - #
