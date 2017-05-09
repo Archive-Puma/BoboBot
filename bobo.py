@@ -10,7 +10,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "2.5 BoboLooker"
+__version__ = "2.6 BoboPorter"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -53,6 +53,7 @@ except ImportError:
 try:
     from core.modules.bjoker import joke
     from core.modules.bnslookup import nslookup
+    from core.modules.bpmap import pmap, pmap_common
     from core.modules.bupdater import is_last_version
     from core.modules.bwhois import whois, whoare
 except ImportError:
@@ -165,6 +166,13 @@ def understand(text):   #Parse conversations
         elif '/ns' == data[0] or '/nameservers' == data[0]:
             for site in data[1:]:
                 response(nslookup('NS',site))
+        # PMAP - BOBO's MODULE #
+        elif '/port' == data[0]:
+            for port in data[2:]:
+                if port == 'common':
+                    response(pmap_common(data[1]))
+                else:
+                    response(pmap(data[1],port))
     #Conversation
     else:
         if 'joke' in text:
