@@ -10,7 +10,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "2.6 BoboPorter"
+__version__ = "2.7 BoboRobot"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -54,6 +54,7 @@ try:
     from core.modules.bjoker import joke
     from core.modules.bnslookup import nslookup
     from core.modules.bpmap import pmap, pmap_common
+    from core.modules.brobots import get_robots
     from core.modules.bupdater import is_last_version
     from core.modules.bwhois import whois, whoare
 except ImportError:
@@ -111,10 +112,10 @@ if args.config: #Load tokens from config file
             try:
                 name, key = line.split('::')
                 token[tokens_available.get(name)] = key.rstrip()
-            except KeyboardInterrupt:
+            except KeyboardInterrupt: #FIX THIS
                 pass
         config_file.close()
-    except KeyboardInterrupt:
+    except KeyboardInterrupt: #FIX THIS
         sys.exit(color.ERROR + "[ERROR] Config file has errors" + color.END)
 
 # C H E C K   T O K E N S
@@ -135,8 +136,12 @@ def bye(text):       #Error verbosed
 
 # B O T   F U N C T I O N S
 def response(text):     #Bobo talks!
-    bot.sendMessage(token['chatID'],text)
-    log(color.YELLOW + "[BBB] Bobo the Bot response " + color.WHITE + text)
+    try:
+        bot.sendMessage(token['chatID'],text)
+        log(color.YELLOW + "[BBB] Bobo the Bot response " + color.WHITE + text)
+    except:
+        bot.sendMessage(token['chatID'],"Too much infomation, my lord...")
+        log(color.YELLOW + "[BBB] Bobo the Bot response " + color.WHITE + "Too much information, my lord...")
 
 def understand(text):   #Parse conversations
     text = text.lower()
@@ -173,6 +178,10 @@ def understand(text):   #Parse conversations
                     response(pmap_common(data[1]))
                 else:
                     response(pmap(data[1],port))
+        # ROBOTS.txt - BOBO's MODULE #
+        elif '/robots' == data[0]:
+            for site in data[1:]:
+                response(get_robots(site))
     #Conversation
     else:
         if 'joke' in text:
@@ -220,5 +229,4 @@ if __name__ == '__main__':
 # ------------------ ToDo's ----------------- #
 #=============================================#
 
-# --------------- Port Scanner -------------- #
 # -- Add help in /command and /command help - #
