@@ -10,7 +10,7 @@ __author__ = "Kike Puma"
 __copyright__ = "Copyright 2017, CosasDePuma"
 __credits__ = ["KikePuma", "CosasDePuma"]
 __license__ = "GNU-3.0"
-__version__ = "2.7 BoboRobot"
+__version__ = "2.8a Spider-Bobo"
 __maintainer__ = "KikePuma"
 __email__ = "kikefontanlorenzo@gmail.com"
 __status__ = "In development"
@@ -55,6 +55,7 @@ try:
     from core.modules.bnslookup import nslookup
     from core.modules.bpmap import pmap, pmap_common
     from core.modules.brobots import get_robots
+    from core.modules.bspider import spider
     from core.modules.bupdater import is_last_version
     from core.modules.bwhois import whois, whoare
 except ImportError:
@@ -148,8 +149,10 @@ def understand(text):   #Parse conversations
     #Commands
     if text[0] == '/':
         data = text.split(" ")
+        if '/version' == data[0]:
+            response(__version__)
         # JOKER - BOBO's MODULE #
-        if '/joke' == data[0]:
+        elif '/joke' == data[0]:
             response(joke())
         # WHOIS - BOBO's MODULE #
         elif '/whois' == data[0]:
@@ -182,6 +185,8 @@ def understand(text):   #Parse conversations
         elif '/robots' == data[0]:
             for site in data[1:]:
                 response(get_robots(site))
+        elif '/spider' == data[0]:
+            response(spider(data[1],data[2],'youneverwillfindthiswordinyourwebpage'))
     #Conversation
     else:
         if 'joke' in text:
@@ -230,3 +235,4 @@ if __name__ == '__main__':
 #=============================================#
 
 # -- Add help in /command and /command help - #
+# ------------- FIX SPIDER ARGS ------------- #
